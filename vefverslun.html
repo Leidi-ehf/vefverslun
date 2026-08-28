@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+<html lang="is">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Birta — Íslensk hönnunarvara</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap');
+
+  :root{
+    --bg: #EFEEE7;
+    --bg-panel: #F7F6F1;
+    --ink: #20241F;
+    --ink-soft: #5B6158;
+    --pine: #1F3D34;
+    --pine-light: #2E5145;
+    --mustard: #C99A2E;
+    --line: #D9D6C9;
+    --white: #FFFFFF;
+    --radius: 2px;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Work Sans', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3, .display{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    letter-spacing:-0.01em;
+  }
+  .mono{
+    font-family:'IBM Plex Mono', monospace;
+  }
+  a{color:inherit; text-decoration:none;}
+  button{font-family:inherit; cursor:pointer; border:none; background:none;}
+  img{max-width:100%; display:block;}
+
+  /* ===== Header ===== */
+  header{
+    position:sticky; top:0; z-index:40;
+    background:rgba(239,238,231,0.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .header-inner{
+    max-width:1180px; margin:0 auto;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 24px;
+  }
+  .logo{
+    font-family:'Fraunces', serif;
+    font-size:1.5rem; font-weight:700;
+    letter-spacing:-0.02em;
+  }
+  .logo span{color:var(--pine);}
+  nav.main-nav{
+    display:flex; gap:28px;
+    font-size:0.92rem; font-weight:500;
+  }
+  nav.main-nav a{
+    color:var(--ink-soft);
+    transition:color .15s;
+    padding-bottom:2px;
+    border-bottom:1px solid transparent;
+  }
+  nav.main-nav a:hover{color:var(--ink); border-color:var(--pine);}
+  .header-actions{display:flex; align-items:center; gap:14px;}
+  .icon-btn{
+    position:relative;
+    width:38px; height:38px;
+    display:flex; align-items:center; justify-content:center;
+    border:1px solid var(--line);
+    border-radius:50%;
+    transition:border-color .15s, background .15s;
+  }
+  .icon-btn:hover{border-color:var(--pine);}
+  .cart-count{
+    position:absolute; top:-6px; right:-6px;
+    background:var(--pine); color:var(--white);
+    font-size:0.65rem; font-weight:700;
+    width:18px; height:18px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .menu-toggle{display:none;}
+
+  /* ===== Hero ===== */
+  .hero{
+    max-width:1180px; margin:0 auto;
+    padding:64px 24px 56px;
+    display:grid; grid-template-columns:1.1fr 0.9fr;
+    gap:48px; align-items:center;
+  }
+  .hero-eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.72rem; letter-spacing:0.14em; text-transform:uppercase;
+    color:var(--pine);
+    margin-bottom:18px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .hero-eyebrow::before{
+    content:''; width:22px; height:1px; background:var(--pine);
+  }
+  .hero h1{
+    font-size:3.2rem; line-height:1.05;
+    max-width:11ch;
+    margin-bottom:20px;
+  }
+  .hero p{
+    color:var(--ink-soft); font-size:1.05rem; line-height:1.6;
+    max-width:42ch; margin-bottom:28px;
+  }
+  .btn-primary{
+    display:inline-flex; align-items:center; gap:10px;
+    background:var(--pine); color:var(--white);
+    padding:14px 26px;
+    font-size:0.92rem; font-weight:600;
+    border-radius:var(--radius);
+    transition:background .15s, transform .15s;
+  }
+  .btn-primary:hover{background:var(--pine-light); transform:translateY(-1px);}
+  .hero-visual{
+    position:relative;
+    aspect-ratio:1/1;
+    background:linear-gradient(155deg, var(--pine) 0%, #14261F 100%);
+    border-radius:4px;
+    overflow:hidden;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .hero-visual::before{
+    content:'';
+    position:absolute; inset:0;
+    background-image: radial-gradient(circle at 30% 25%, rgba(255,255,255,0.08), transparent 45%),
+                       radial-gradient(circle at 75% 70%, rgba(201,154,46,0.25), transparent 50%);
+  }
+  .hero-tag{
+    position:relative;
+    background:var(--mustard);
+    color:var(--pine);
+    font-family:'IBM Plex Mono', monospace;
+    font-weight:600; font-size:0.85rem;
+    padding:10px 18px 10px 14px;
+    border-radius:2px;
+    transform:rotate(-4deg);
+    box-shadow:0 8px 20px rgba(0,0,0,0.25);
+  }
+  .hero-tag::before{
+    content:''; position:absolute; left:4px; top:50%; transform:translateY(-50%);
+    width:6px; height:6px; border-radius:50%; background:var(--bg);
+  }
+
+  /* ===== Category chips ===== */
+  .cat-bar{
+    max-width:1180px; margin:0 auto;
+    padding:0 24px 32px;
+    display:flex; gap:10px; flex-wrap:wrap;
+  }
+  .chip{
+    padding:9px 18px;
+    border:1px solid var(--line);
+    border-radius:20px;
+    font-size:0.85rem; font-weight:500;
+    color:var(--ink-soft);
+    transition:all .15s;
+  }
+  .chip:hover{border-color:var(--pine); color:var(--ink);}
+  .chip.active{
+    background:var(--pine); border-color:var(--pine); color:var(--white);
+  }
+
+  /* ===== Product grid ===== */
+  .section-head{
+    max-width:1180px; margin:0 auto;
+    padding:0 24px; margin-bottom:24px;
+    display:flex; align-items:baseline; justify-content:space-between;
+  }
+  .section-head h2{font-size:1.6rem;}
+  .section-head span{color:var(--ink-soft); font-size:0.85rem;}
+  #products{
+    max-width:1180px; margin:0 auto;
+    padding:0 24px 80px;
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:28px;
+  }
+  .card{
+    background:var(--bg-panel);
+    border:1px solid var(--line);
+    display:flex; flex-direction:column;
+    transition:transform .15s, box-shadow .15s;
+  }
+  .card:hover{transform:translateY(-3px); box-shadow:0 12px 24px rgba(32,36,31,0.08);}
+  .card-media{
+    aspect-ratio:1/1;
+    position:relative;
+    display:flex; align-items:center; justify-content:center;
+    font-size:3rem;
+    overflow:hidden;
+  }
+  .card-body{padding:18px 18px 20px; display:flex; flex-direction:column; gap:8px; flex:1;}
+  .card-cat{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.65rem; letter-spacing:0.08em; text-transform:uppercase;
+    color:var(--ink-soft);
+  }
+  .card-cat-row{
+    display:flex; align-items:center; justify-content:space-between; gap:8px;
+  }
+  .stock-note{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.68rem; font-weight:600;
+    white-space:nowrap;
+  }
+  .stock-note.ok{color:var(--ink-soft);}
+  .stock-note.low{color:#B0402A;}
+  .stock-note.out{color:#B0402A;}
+  .card.out-of-stock .card-media{filter:grayscale(0.6); opacity:0.55;}
+  .card.out-of-stock .card-title{color:var(--ink-soft);}
+  .sold-out-badge{
+    position:absolute; top:10px; left:10px;
+    background:var(--ink); color:var(--white);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.62rem; letter-spacing:0.06em; text-transform:uppercase;
+    padding:5px 10px; border-radius:2px;
+  }
+  .card-title{font-size:1.05rem; font-weight:600; line-height:1.3;}
+  .card-desc{font-size:0.85rem; color:var(--ink-soft); line-height:1.5; flex:1;}
+  .card-footer{
+    display:flex; align-items:center; justify-content:space-between;
+    margin-top:8px; padding-top:14px; border-top:1px solid var(--line);
+  }
+  .price-tag{
+    position:relative;
+    font-family:'IBM Plex Mono', monospace;
+    font-weight:600; font-size:0.95rem;
+    background:var(--bg); border:1px solid var(--line);
+    padding:6px 12px 6px 20px;
+    border-radius:2px;
+  }
+  .price-tag::before{
+    content:''; position:absolute; left:8px; top:50%; transform:translateY(-50%);
+    width:5px; height:5px; border-radius:50%; background:var(--ink-soft);
+    box-shadow:0 0 0 1px var(--bg);
+  }
+  .add-btn{
+    width:38px; height:38px; border-radius:50%;
+    background:var(--ink); color:var(--white);
+    font-size:1.2rem; display:flex; align-items:center; justify-content:center;
+    transition:background .15s, transform .15s;
+  }
+  .add-btn:hover{background:var(--pine); transform:scale(1.06);}
+  .add-btn.added{background:var(--mustard); color:var(--pine);}
+  .add-btn:disabled{background:var(--line); color:var(--ink-soft); cursor:not-allowed; transform:none;}
+  .add-btn:disabled:hover{background:var(--line); transform:none;}
+
+  /* ===== Footer ===== */
+  footer{
+    background:var(--pine); color:#EFEEE7;
+    padding:56px 24px 28px;
+  }
+  .footer-inner{
+    max-width:1180px; margin:0 auto;
+    display:grid; grid-template-columns:1.4fr 1fr 1fr;
+    gap:40px;
+  }
+  footer h3{font-size:1.3rem; margin-bottom:10px;}
+  footer p{color:#B9C4BC; font-size:0.88rem; line-height:1.6; max-width:34ch;}
+  footer .col-title{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.7rem; letter-spacing:0.1em; text-transform:uppercase;
+    color:#8FA096; margin-bottom:14px;
+  }
+  footer ul{list-style:none; display:flex; flex-direction:column; gap:10px;}
+  footer a{color:#D8DED9; font-size:0.9rem; transition:color .15s;}
+  footer a:hover{color:var(--mustard);}
+  .footer-bottom{
+    max-width:1180px; margin:40px auto 0; padding-top:20px;
+    border-top:1px solid rgba(255,255,255,0.12);
+    font-size:0.78rem; color:#8FA096;
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;
+  }
+
+  /* ===== Cart drawer ===== */
+  .overlay{
+    position:fixed; inset:0; background:rgba(20,22,19,0.45);
+    opacity:0; pointer-events:none; transition:opacity .25s;
+    z-index:60;
+  }
+  .overlay.open{opacity:1; pointer-events:auto;}
+  .drawer{
+    position:fixed; top:0; right:0; height:100%;
+    width:420px; max-width:92vw;
+    background:var(--bg-panel);
+    z-index:70;
+    transform:translateX(100%);
+    transition:transform .3s cubic-bezier(.4,0,.2,1);
+    display:flex; flex-direction:column;
+    box-shadow:-12px 0 40px rgba(0,0,0,0.15);
+  }
+  .drawer.open{transform:translateX(0);}
+  .drawer-head{
+    padding:22px 24px; border-bottom:1px solid var(--line);
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .drawer-head h2{font-size:1.25rem;}
+  .close-btn{font-size:1.4rem; color:var(--ink-soft); line-height:1;}
+  .close-btn:hover{color:var(--ink);}
+  .cart-items{flex:1; overflow-y:auto; padding:10px 24px;}
+  .cart-empty{
+    padding:60px 0; text-align:center; color:var(--ink-soft); font-size:0.9rem;
+  }
+  .cart-row{
+    display:flex; gap:14px; padding:16px 0; border-bottom:1px solid var(--line);
+  }
+  .cart-row-media{
+    width:60px; height:60px; flex-shrink:0;
+    background:var(--bg); display:flex; align-items:center; justify-content:center;
+    font-size:1.6rem; border-radius:2px;
+  }
+  .cart-row-info{flex:1; display:flex; flex-direction:column; gap:4px;}
+  .cart-row-title{font-size:0.92rem; font-weight:600;}
+  .cart-row-price{font-family:'IBM Plex Mono', monospace; font-size:0.82rem; color:var(--ink-soft);}
+  .qty-control{
+    display:flex; align-items:center; gap:10px; margin-top:4px;
+  }
+  .qty-control button{
+    width:24px; height:24px; border:1px solid var(--line); border-radius:50%;
+    display:flex; align-items:center; justify-content:center; font-size:0.85rem;
+  }
+  .qty-control button:hover{border-color:var(--pine);}
+  .remove-link{
+    font-size:0.75rem; color:var(--ink-soft); text-decoration:underline;
+    margin-top:6px; align-self:flex-start;
+  }
+  .remove-link:hover{color:#B0402A;}
+  .drawer-foot{
+    padding:20px 24px 26px; border-top:1px solid var(--line);
+  }
+  .subtotal-row{
+    display:flex; justify-content:space-between; align-items:baseline;
+    margin-bottom:16px;
+  }
+  .subtotal-row .label{font-size:0.9rem; color:var(--ink-soft);}
+  .subtotal-row .amount{font-family:'IBM Plex Mono', monospace; font-size:1.3rem; font-weight:600;}
+  .btn-checkout{
+    width:100%; background:var(--pine); color:var(--white);
+    padding:15px; font-weight:600; font-size:0.95rem; border-radius:var(--radius);
+    transition:background .15s;
+  }
+  .btn-checkout:hover{background:var(--pine-light);}
+  .btn-checkout:disabled{background:var(--line); color:var(--ink-soft); cursor:not-allowed;}
+
+  /* ===== Checkout modal ===== */
+  .modal-overlay{
+    position:fixed; inset:0; background:rgba(20,22,19,0.55);
+    z-index:80; display:flex; align-items:center; justify-content:center;
+    opacity:0; pointer-events:none; transition:opacity .25s;
+    padding:20px;
+  }
+  .modal-overlay.open{opacity:1; pointer-events:auto;}
+  .modal{
+    background:var(--bg-panel); max-width:440px; width:100%;
+    padding:32px; border-radius:3px;
+    transform:translateY(12px); transition:transform .25s;
+    max-height:88vh; overflow-y:auto;
+  }
+  .modal-overlay.open .modal{transform:translateY(0);}
+  .modal h2{font-size:1.4rem; margin-bottom:6px;}
+  .modal .sub{color:var(--ink-soft); font-size:0.85rem; margin-bottom:22px;}
+  .field{margin-bottom:16px;}
+  .field label{
+    display:block; font-size:0.78rem; font-weight:600; margin-bottom:6px;
+    text-transform:uppercase; letter-spacing:0.04em; color:var(--ink-soft);
+  }
+  .field input, .field textarea{
+    width:100%; padding:11px 13px;
+    border:1px solid var(--line); background:var(--bg);
+    font-family:inherit; font-size:0.92rem; border-radius:2px;
+    color:var(--ink);
+  }
+  .field input:focus, .field textarea:focus{outline:2px solid var(--pine); outline-offset:1px;}
+  .field-row{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+  .modal-total{
+    display:flex; justify-content:space-between; padding:14px 0;
+    border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+    margin:20px 0; font-weight:600;
+  }
+  .confirm{
+    text-align:center; padding:20px 0;
+  }
+  .confirm .check{
+    width:60px; height:60px; border-radius:50%; background:var(--pine);
+    color:var(--white); display:flex; align-items:center; justify-content:center;
+    font-size:1.8rem; margin:0 auto 20px;
+  }
+  .confirm h2{margin-bottom:10px;}
+  .confirm p{color:var(--ink-soft); font-size:0.9rem; line-height:1.6; margin-bottom:24px;}
+  .order-id{
+    font-family:'IBM Plex Mono', monospace; background:var(--bg);
+    border:1px solid var(--line); padding:10px; font-size:0.85rem; margin-bottom:20px;
+  }
+  .btn-secondary{
+    width:100%; border:1px solid var(--line); padding:13px;
+    font-weight:600; font-size:0.9rem; border-radius:var(--radius);
+    transition:border-color .15s;
+  }
+  .btn-secondary:hover{border-color:var(--pine);}
+
+  /* ===== Toast ===== */
+  .toast{
+    position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(20px);
+    background:var(--ink); color:var(--white);
+    padding:13px 22px; border-radius:30px; font-size:0.85rem; font-weight:500;
+    z-index:90; opacity:0; pointer-events:none; transition:all .25s;
+  }
+  .toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+
+  /* ===== Admin ===== */
+  body.admin-mode > header,
+  body.admin-mode .hero,
+  body.admin-mode .cat-bar,
+  body.admin-mode .section-head,
+  body.admin-mode #products,
+  body.admin-mode > footer,
+  body.admin-mode .drawer,
+  body.admin-mode .overlay{ display:none !important; }
+  #adminApp{ display:none; min-height:100vh; }
+  body.admin-mode #adminApp{ display:block; }
+
+  .admin-login-wrap{
+    min-height:100vh; display:flex; align-items:center; justify-content:center;
+    background:var(--pine); padding:20px;
+  }
+  .admin-login-box{
+    background:var(--bg-panel); width:100%; max-width:380px;
+    padding:38px 32px; border-radius:3px;
+  }
+  .admin-login-box .logo{ margin-bottom:6px; }
+  .admin-login-box .sub{ color:var(--ink-soft); font-size:0.85rem; margin-bottom:26px; }
+  .admin-error{
+    background:#F6E3DD; color:#8A3620; border:1px solid #E3B7A6;
+    font-size:0.82rem; padding:10px 12px; border-radius:2px; margin-bottom:16px;
+    display:none;
+  }
+  .admin-error.show{ display:block; }
+  .admin-hint{
+    margin-top:18px; font-size:0.75rem; color:var(--ink-soft);
+    background:var(--bg); border:1px solid var(--line); padding:10px 12px; border-radius:2px;
+  }
+  .back-to-shop{
+    display:inline-block; margin-top:18px; font-size:0.82rem; color:#B9C4BC; text-decoration:underline;
+  }
+
+  .admin-shell{ display:flex; min-height:100vh; }
+  .admin-sidebar{
+    width:230px; flex-shrink:0; background:var(--pine); color:#E8ECE9;
+    padding:26px 0; display:flex; flex-direction:column;
+  }
+  .admin-sidebar .logo{ padding:0 24px 22px; font-size:1.3rem; color:var(--white); }
+  .admin-sidebar .logo span{ color:var(--mustard); }
+  .admin-nav-item{
+    padding:13px 24px; font-size:0.9rem; font-weight:500; color:#B9C4BC;
+    border-left:3px solid transparent; cursor:pointer; transition:all .15s;
+  }
+  .admin-nav-item:hover{ color:var(--white); background:rgba(255,255,255,0.04); }
+  .admin-nav-item.active{ color:var(--white); border-left-color:var(--mustard); background:rgba(255,255,255,0.06); }
+  .admin-sidebar-foot{ margin-top:auto; padding:16px 24px 0; border-top:1px solid rgba(255,255,255,0.12); }
+  .admin-user-pill{ font-size:0.8rem; color:#B9C4BC; margin-bottom:10px; }
+  .admin-logout{ font-size:0.82rem; color:var(--mustard); text-decoration:underline; }
+  .admin-view-shop{ font-size:0.8rem; color:#B9C4BC; text-decoration:underline; display:block; margin-top:8px; }
+
+  .admin-main{ flex:1; padding:32px 40px 60px; overflow-x:hidden; }
+  .admin-topbar{ display:flex; align-items:center; justify-content:space-between; margin-bottom:28px; flex-wrap:wrap; gap:14px; }
+  .admin-topbar h1{ font-size:1.7rem; }
+  .admin-topbar .sub{ color:var(--ink-soft); font-size:0.88rem; }
+
+  .stat-row{ display:grid; grid-template-columns:repeat(4, 1fr); gap:16px; margin-bottom:32px; }
+  .stat-card{ background:var(--bg-panel); border:1px solid var(--line); padding:20px; }
+  .stat-card .n{ font-family:'Fraunces', serif; font-size:1.9rem; font-weight:700; }
+  .stat-card .l{ font-size:0.78rem; color:var(--ink-soft); margin-top:4px; }
+
+  .admin-panel{ background:var(--bg-panel); border:1px solid var(--line); }
+  .admin-panel-head{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 22px; border-bottom:1px solid var(--line); flex-wrap:wrap; gap:10px;
+  }
+  .admin-panel-head h2{ font-size:1.15rem; }
+  .btn-admin{
+    background:var(--pine); color:var(--white); padding:10px 18px;
+    font-size:0.85rem; font-weight:600; border-radius:2px; transition:background .15s;
+  }
+  .btn-admin:hover{ background:var(--pine-light); }
+  .btn-admin-outline{
+    border:1px solid var(--line); padding:9px 16px; font-size:0.85rem; font-weight:600;
+    border-radius:2px; color:var(--ink); transition:border-color .15s;
+  }
+  .btn-admin-outline:hover{ border-color:var(--pine); }
+  .btn-admin-danger{ color:#B0402A; font-size:0.8rem; text-decoration:underline; }
+
+  table.admin-table{ width:100%; border-collapse:collapse; font-size:0.87rem; }
+  table.admin-table th{
+    text-align:left; font-family:'IBM Plex Mono', monospace; font-size:0.68rem;
+    letter-spacing:0.06em; text-transform:uppercase; color:var(--ink-soft);
+    padding:12px 22px; border-bottom:1px solid var(--line); white-space:nowrap;
+  }
+  table.admin-table td{ padding:12px 22px; border-bottom:1px solid var(--line); vertical-align:middle; }
+  table.admin-table tr:last-child td{ border-bottom:none; }
+  table.admin-table input{
+    width:100%; border:1px solid transparent; background:transparent;
+    font-family:inherit; font-size:0.87rem; padding:6px 8px; border-radius:2px; color:var(--ink);
+  }
+  table.admin-table input:hover{ border-color:var(--line); }
+  table.admin-table input:focus{ outline:none; border-color:var(--pine); background:var(--bg); }
+  table.admin-table select{
+    border:1px solid var(--line); background:var(--bg); padding:6px 8px; border-radius:2px; font-family:inherit; font-size:0.85rem;
+  }
+  .cell-actions{ display:flex; gap:14px; align-items:center; white-space:nowrap; }
+  .save-indicator{ font-size:0.72rem; color:var(--pine); opacity:0; transition:opacity .2s; }
+  .save-indicator.show{ opacity:1; }
+  .table-scroll{ overflow-x:auto; }
+  .empty-row td{ text-align:center; color:var(--ink-soft); padding:40px 20px; }
+
+  .admin-modal-overlay{
+    position:fixed; inset:0; background:rgba(20,22,19,0.55); z-index:100;
+    display:flex; align-items:center; justify-content:center; padding:20px;
+  }
+  .admin-modal{
+    background:var(--bg-panel); width:100%; max-width:420px; padding:30px;
+    border-radius:3px; max-height:88vh; overflow-y:auto;
+  }
+  .admin-modal h2{ font-size:1.25rem; margin-bottom:20px; }
+
+  @media (max-width: 900px){
+    .admin-shell{ flex-direction:column; }
+    .admin-sidebar{ width:100%; flex-direction:row; align-items:center; padding:14px 16px; overflow-x:auto; gap:4px; }
+    .admin-sidebar .logo{ padding:0 12px 0 0; flex-shrink:0; }
+    .admin-nav-item{ border-left:none; border-bottom:3px solid transparent; padding:10px 14px; white-space:nowrap; }
+    .admin-nav-item.active{ border-left:none; border-bottom-color:var(--mustard); }
+    .admin-sidebar-foot{ display:none; }
+    .admin-main{ padding:24px 18px 50px; }
+    .stat-row{ grid-template-columns:1fr 1fr; }
+  }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 880px){
+    .hero{grid-template-columns:1fr; padding:40px 20px 36px; gap:32px;}
+    .hero h1{font-size:2.3rem; max-width:none;}
+    .hero-visual{max-width:260px; margin:0 auto;}
+    #products{grid-template-columns:repeat(2, 1fr); gap:16px; padding:0 20px 60px;}
+    .card-media{font-size:2.2rem;}
+    nav.main-nav{
+      position:fixed; top:73px; left:0; right:0; bottom:0;
+      background:var(--bg); flex-direction:column; gap:0;
+      padding:10px 20px;
+      transform:translateX(-100%); transition:transform .25s;
+      z-index:50;
+    }
+    nav.main-nav.open{transform:translateX(0);}
+    nav.main-nav a{padding:16px 0; border-bottom:1px solid var(--line); font-size:1.05rem;}
+    .menu-toggle{
+      display:flex; width:38px; height:38px; align-items:center; justify-content:center;
+      border:1px solid var(--line); border-radius:50%;
+    }
+    .footer-inner{grid-template-columns:1fr; gap:28px;}
+    .drawer{width:100%; max-width:100%;}
+  }
+  @media (max-width: 520px){
+    #products{grid-template-columns:1fr 1fr; gap:12px;}
+    .hero h1{font-size:1.9rem;}
+    .card-body{padding:14px;}
+    .price-tag{font-size:0.82rem; padding:5px 10px 5px 16px;}
+    .add-btn{width:34px; height:34px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <button class="menu-toggle" id="menuToggle" aria-label="Opna valmynd">☰</button>
+    <a href="#top" class="logo">B<span>i</span>rta</a>
+    <nav class="main-nav" id="mainNav">
+      <a href="#products">Vörur</a>
+      <a href="#" data-cat="Ull">Prjónavara</a>
+      <a href="#" data-cat="Keramik">Keramik</a>
+      <a href="#" data-cat="Ljós">Ljós & kerti</a>
+    </nav>
+    <div class="header-actions">
+      <button class="icon-btn" id="cartBtn" aria-label="Opna körfu">
+        🛍
+        <span class="cart-count" id="cartCount" style="display:none">0</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<section class="hero" id="top">
+  <div>
+    <div class="hero-eyebrow">Handverk að heiman</div>
+    <h1>Hlutir sem eiga heima í íslensku heimili</h1>
+    <p>Prjónavara, keramik og ljósgjafar, valið með það í huga að endast — ekki bara að skreyta. Öll hönnun kemur frá litlum verkstæðum um allt land.</p>
+    <a href="#products" class="btn-primary">Skoða vörur →</a>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-tag">kr. 12.900</div>
+  </div>
+</section>
+
+<div class="cat-bar" id="catBar">
+  <button class="chip active" data-cat="Allt">Allt</button>
+  <button class="chip" data-cat="Ull">Prjónavara</button>
+  <button class="chip" data-cat="Keramik">Keramik</button>
+  <button class="chip" data-cat="Ljós">Ljós & kerti</button>
+  <button class="chip" data-cat="Textíll">Textíll</button>
+</div>
+
+<div class="section-head">
+  <h2>Nýjar vörur</h2>
+  <span id="resultCount"></span>
+</div>
+
+<div id="products"></div>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <h3>Birta</h3>
+      <p>Netverslun með íslenska hönnunarvöru. Smíðuð til reynslu — pantanir vistast í vafranum þínum.</p>
+    </div>
+    <div>
+      <div class="col-title">Verslun</div>
+      <ul>
+        <li><a href="#products">Allar vörur</a></li>
+        <li><a href="#">Prjónavara</a></li>
+        <li><a href="#">Keramik</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="col-title">Þjónusta</div>
+      <ul>
+        <li><a href="#">Sendingar</a></li>
+        <li><a href="#">Skil</a></li>
+        <li><a href="#">Hafa samband</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Birta</span>
+    <span>Reykjavík, Ísland · <a href="#admin" style="text-decoration:underline;">Stjórnandi</a></span>
+  </div>
+</footer>
+
+<div id="adminApp"></div>
+
+<!-- Cart drawer -->
+<div class="overlay" id="overlay"></div>
+<aside class="drawer" id="drawer">
+  <div class="drawer-head">
+    <h2>Karfan þín</h2>
+    <button class="close-btn" id="closeDrawer">×</button>
+  </div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="drawer-foot">
+    <div class="subtotal-row">
+      <span class="label">Samtals</span>
+      <span class="amount" id="cartTotal">kr. 0</span>
+    </div>
+    <button class="btn-checkout" id="checkoutBtn" disabled>Ganga frá pöntun</button>
+  </div>
+</aside>
+
+<!-- Checkout modal -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" id="modalContent"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  const DEFAULT_PRODUCTS = [
+    {id:1, name:"Lopapeysa, náttúrulit", cat:"Ull", price:24900, icon:"🧶", desc:"Handprjónuð úr íslenskri ull, hefðbundið hringmynstur.", stock:4},
+    {id:2, name:"Ullarteppi, gráleitt", cat:"Ull", price:15900, icon:"🧣", desc:"Þykkt teppi ofið úr tvöfaldri ull, 130×180 cm.", stock:9},
+    {id:3, name:"Ullarvettlingar", cat:"Ull", price:4900, icon:"🧤", desc:"Vatnsheldir að utan, mjúkir að innan.", stock:0},
+    {id:4, name:"Kaffibolli, steinleir", cat:"Keramik", price:3900, icon:"☕", desc:"Rennt og glerjað í höndunum, tekur 250 ml.", stock:14},
+    {id:5, name:"Skál, hraunáferð", cat:"Keramik", price:6900, icon:"🥣", desc:"Djúp skál með grófri glerjun sem minnir á hraun.", stock:2},
+    {id:6, name:"Vasi, mjólkurhvítur", cat:"Keramik", price:8900, icon:"🏺", desc:"Einfaldur, hávaxinn vasi fyrir þurrblóm eða greinar.", stock:6},
+    {id:7, name:"Sojakerti, birki", cat:"Ljós", price:3400, icon:"🕯️", desc:"40 klst. brennslutími, ilmar af birki og mosa.", stock:21},
+    {id:8, name:"Borðlampi, eik", cat:"Ljós", price:18900, icon:"💡", desc:"Handsmíðaður fótur úr eik með líni-skermi.", stock:3},
+    {id:9, name:"Kertastjaki, eir", cat:"Ljós", price:5900, icon:"🕯️", desc:"Þrír armar, burstað eir sem dökknar fallega með tíð.", stock:0},
+    {id:10, name:"Púðaver, hörefni", cat:"Textíll", price:7400, icon:"🧵", desc:"100% hör, 50×50 cm, þvottekta litir.", stock:11},
+    {id:11, name:"Borðrenningur", cat:"Textíll", price:6400, icon:"🧵", desc:"Vefnaður úr líni og bómull, 40×150 cm.", stock:5},
+    {id:12, name:"Ullarsokkar", cat:"Ull", price:2900, icon:"🧦", desc:"Þykkir, prjónaðir sokkar með slitsterkum hæl.", stock:1}
+  ];
+
+  function loadProducts(){
+    const raw = localStorage.getItem("birta_products");
+    if(raw){
+      try{ return JSON.parse(raw); } catch(e){ /* fall through */ }
+    }
+    return JSON.parse(JSON.stringify(DEFAULT_PRODUCTS));
+  }
+  function saveProducts(){
+    localStorage.setItem("birta_products", JSON.stringify(PRODUCTS));
+  }
+
+  let PRODUCTS = loadProducts();
+
+  const money = n => "kr. " + n.toLocaleString("is-IS");
+
+  let cart = JSON.parse(localStorage.getItem("birta_cart") || "[]");
+  let activeCat = "Allt";
+
+  function saveCart(){
+    localStorage.setItem("birta_cart", JSON.stringify(cart));
+    renderCartCount();
+  }
+
+  function renderCartCount(){
+    const count = cart.reduce((s,i)=>s+i.qty,0);
+    const el = document.getElementById("cartCount");
+    if(count > 0){ el.style.display="flex"; el.textContent = count; }
+    else { el.style.display="none"; }
+  }
+
+  function renderProducts(){
+    const grid = document.getElementById("products");
+    const list = activeCat === "Allt" ? PRODUCTS : PRODUCTS.filter(p => p.cat === activeCat);
+    document.getElementById("resultCount").textContent = list.length + " vörur";
+    grid.innerHTML = list.map(p => {
+      const out = p.stock <= 0;
+      const low = !out && p.stock <= 3;
+      const inCart = cart.find(i=>i.id===p.id);
+      const cartQty = inCart ? inCart.qty : 0;
+      const maxedOut = !out && cartQty >= p.stock;
+      const stockLabel = out ? "Uppselt" : (low ? `Aðeins ${p.stock} eftir` : `${p.stock} á lager`);
+      const stockClass = out ? "out" : (low ? "low" : "ok");
+      return `
+      <div class="card ${out ? 'out-of-stock' : ''}">
+        <div class="card-media" style="background:${mediaColor(p.cat)}">
+          ${out ? '<span class="sold-out-badge">Uppselt</span>' : ''}
+          ${p.icon}
+        </div>
+        <div class="card-body">
+          <div class="card-cat-row">
+            <div class="card-cat">${p.cat}</div>
+            <div class="stock-note ${stockClass}">${stockLabel}</div>
+          </div>
+          <div class="card-title">${p.name}</div>
+          <div class="card-desc">${p.desc}</div>
+          <div class="card-footer">
+            <div class="price-tag">${money(p.price)}</div>
+            <button class="add-btn" data-id="${p.id}" aria-label="Setja í körfu" ${out || maxedOut ? 'disabled' : ''}>+</button>
+          </div>
+        </div>
+      </div>
+    `;
+    }).join("");
+
+    grid.querySelectorAll(".add-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const ok = addToCart(parseInt(btn.dataset.id));
+        if(!ok) return;
+        btn.classList.add("added");
+        btn.textContent = "✓";
+        setTimeout(()=>{ btn.classList.remove("added"); btn.textContent = "+"; renderProducts(); }, 900);
+      });
+    });
+  }
+
+  function mediaColor(cat){
+    const map = {
+      "Ull":"linear-gradient(155deg,#E4DCC8,#CDC2A4)",
+      "Keramik":"linear-gradient(155deg,#E8E4DC,#D2CBBC)",
+      "Ljós":"linear-gradient(155deg,#EAD9B0,#D4B876)",
+      "Textíll":"linear-gradient(155deg,#DCE1D6,#B9C4AF)"
+    };
+    return map[cat] || "#EAE7DC";
+  }
+
+  function addToCart(id){
+    const product = PRODUCTS.find(p=>p.id===id);
+    if(product.stock <= 0){ showToast(product.name + " er uppselt"); return false; }
+    const existing = cart.find(i=>i.id===id);
+    const currentQty = existing ? existing.qty : 0;
+    if(currentQty >= product.stock){ showToast("Ekki fleiri til á lager"); return false; }
+    if(existing){ existing.qty += 1; }
+    else{ cart.push({id, qty:1}); }
+    saveCart();
+    showToast(product.name + " sett í körfu");
+    return true;
+  }
+
+  function changeQty(id, delta){
+    const item = cart.find(i=>i.id===id);
+    if(!item) return;
+    const product = PRODUCTS.find(p=>p.id===id);
+    if(delta > 0 && item.qty >= product.stock){
+      showToast("Ekki fleiri til á lager");
+      return;
+    }
+    item.qty += delta;
+    if(item.qty <= 0){ cart = cart.filter(i=>i.id!==id); }
+    saveCart();
+    renderCart();
+    renderProducts();
+  }
+
+  function removeItem(id){
+    cart = cart.filter(i=>i.id!==id);
+    saveCart();
+    renderCart();
+  }
+
+  function cartLines(){
+    return cart.map(i => ({...i, product: PRODUCTS.find(p=>p.id===i.id)}));
+  }
+
+  function cartTotal(){
+    return cartLines().reduce((s,l)=> s + l.product.price * l.qty, 0);
+  }
+
+  function renderCart(){
+    const container = document.getElementById("cartItems");
+    const lines = cartLines();
+    if(lines.length === 0){
+      container.innerHTML = `<div class="cart-empty">Karfan þín er tóm.<br>Skoðaðu vörurnar okkar og bættu einhverju við.</div>`;
+    } else {
+      container.innerHTML = lines.map(l => `
+        <div class="cart-row">
+          <div class="cart-row-media" style="background:${mediaColor(l.product.cat)}">${l.product.icon}</div>
+          <div class="cart-row-info">
+            <div class="cart-row-title">${l.product.name}</div>
+            <div class="cart-row-price">${money(l.product.price)}</div>
+            <div class="qty-control">
+              <button data-act="minus" data-id="${l.id}">−</button>
+              <span>${l.qty}</span>
+              <button data-act="plus" data-id="${l.id}" ${l.qty >= l.product.stock ? 'disabled' : ''}>+</button>
+            </div>
+            ${l.qty >= l.product.stock ? `<div class="stock-note low" style="margin-top:2px;">Hámark á lager náð</div>` : ''}
+            <button class="remove-link" data-remove="${l.id}">Fjarlægja</button>
+          </div>
+        </div>
+      `).join("");
+
+      container.querySelectorAll("[data-act]").forEach(btn=>{
+        btn.addEventListener("click", ()=>{
+          changeQty(parseInt(btn.dataset.id), btn.dataset.act === "plus" ? 1 : -1);
+        });
+      });
+      container.querySelectorAll("[data-remove]").forEach(btn=>{
+        btn.addEventListener("click", ()=> removeItem(parseInt(btn.dataset.remove)));
+      });
+    }
+    document.getElementById("cartTotal").textContent = money(cartTotal());
+    document.getElementById("checkoutBtn").disabled = lines.length === 0;
+  }
+
+  function showToast(msg){
+    const t = document.getElementById("toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    clearTimeout(t._timer);
+    t._timer = setTimeout(()=> t.classList.remove("show"), 2200);
+  }
+
+  /* ===== Drawer open/close ===== */
+  const drawer = document.getElementById("drawer");
+  const overlay = document.getElementById("overlay");
+  function openDrawer(){ renderCart(); drawer.classList.add("open"); overlay.classList.add("open"); }
+  function closeDrawer(){ drawer.classList.remove("open"); overlay.classList.remove("open"); }
+  document.getElementById("cartBtn").addEventListener("click", openDrawer);
+  document.getElementById("closeDrawer").addEventListener("click", closeDrawer);
+  overlay.addEventListener("click", ()=>{ closeDrawer(); closeModal(); });
+
+  /* ===== Category filter ===== */
+  function setActiveCat(cat){
+    activeCat = cat;
+    document.querySelectorAll(".chip").forEach(c=>{
+      c.classList.toggle("active", c.dataset.cat === cat);
+    });
+    renderProducts();
+  }
+  document.getElementById("catBar").addEventListener("click", (e)=>{
+    const chip = e.target.closest(".chip");
+    if(chip) setActiveCat(chip.dataset.cat);
+  });
+  document.querySelectorAll('nav.main-nav a[data-cat]').forEach(a=>{
+    a.addEventListener("click", (e)=>{
+      e.preventDefault();
+      setActiveCat(a.dataset.cat);
+      document.getElementById("products").scrollIntoView({behavior:"smooth"});
+      document.getElementById("mainNav").classList.remove("open");
+    });
+  });
+
+  /* ===== Mobile menu ===== */
+  document.getElementById("menuToggle").addEventListener("click", ()=>{
+    document.getElementById("mainNav").classList.toggle("open");
+  });
+
+  /* ===== Checkout modal ===== */
+  const modalOverlay = document.getElementById("modalOverlay");
+  const modalContent = document.getElementById("modalContent");
+
+  function openModal(){
+    modalContent.innerHTML = `
+      <h2>Frágangur pöntunar</h2>
+      <div class="sub">Fylltu út upplýsingar til að ljúka pöntun.</div>
+      <div class="field-row">
+        <div class="field"><label>Fornafn</label><input id="fName" required></div>
+        <div class="field"><label>Eftirnafn</label><input id="lName" required></div>
+      </div>
+      <div class="field"><label>Netfang</label><input id="email" type="email" required></div>
+      <div class="field"><label>Heimilisfang</label><input id="address" required></div>
+      <div class="field-row">
+        <div class="field"><label>Póstnúmer</label><input id="zip" required></div>
+        <div class="field"><label>Sími</label><input id="phone" required></div>
+      </div>
+      <div class="modal-total">
+        <span>Samtals</span>
+        <span class="mono">${money(cartTotal())}</span>
+      </div>
+      <button class="btn-checkout" id="submitOrder">Staðfesta pöntun</button>
+    `;
+    modalOverlay.classList.add("open");
+    document.getElementById("submitOrder").addEventListener("click", submitOrder);
+  }
+
+  function submitOrder(){
+    const required = ["fName","lName","email","address","zip","phone"];
+    for(const id of required){
+      const el = document.getElementById(id);
+      if(!el.value.trim()){ el.focus(); el.style.outline="2px solid #B0402A"; return; }
+    }
+    const orderId = "BIR-" + Math.floor(100000 + Math.random()*900000);
+    const orders = JSON.parse(localStorage.getItem("birta_orders") || "[]");
+    orders.push({id: orderId, items: cartLines(), total: cartTotal(), date: new Date().toISOString()});
+    localStorage.setItem("birta_orders", JSON.stringify(orders));
+
+    modalContent.innerHTML = `
+      <div class="confirm">
+        <div class="check">✓</div>
+        <h2>Takk fyrir pöntunina!</h2>
+        <p>Staðfesting hefur verið vistuð. Pöntunarnúmerið þitt er hér að neðan.</p>
+        <div class="order-id">${orderId}</div>
+        <button class="btn-secondary" id="closeConfirm">Loka</button>
+      </div>
+    `;
+    document.getElementById("closeConfirm").addEventListener("click", ()=>{
+      closeModal(); closeDrawer();
+    });
+    cart = [];
+    saveCart();
+  }
+
+  function closeModal(){ modalOverlay.classList.remove("open"); }
+
+  document.getElementById("checkoutBtn").addEventListener("click", openModal);
+  modalOverlay.addEventListener("click", (e)=>{ if(e.target === modalOverlay) closeModal(); });
+
+  /* ======================================================
+     ===== Stjórnendasvæði (Admin) =========================
+     ====================================================== */
+
+  const ADMIN_CATS = ["Ull","Keramik","Ljós","Textíll"];
+
+  function loadAdminUsers(){
+    const raw = localStorage.getItem("birta_admin_users");
+    if(raw){ try{ return JSON.parse(raw); } catch(e){ /* fall through */ } }
+    const seed = [{username:"admin", password:"birta2026", role:"Aðalstjórnandi"}];
+    localStorage.setItem("birta_admin_users", JSON.stringify(seed));
+    return seed;
+  }
+  function saveAdminUsers(users){
+    localStorage.setItem("birta_admin_users", JSON.stringify(users));
+  }
+  function getAdminSession(){
+    return sessionStorage.getItem("birta_admin_session");
+  }
+  function setAdminSession(username){
+    sessionStorage.setItem("birta_admin_session", username);
+  }
+  function clearAdminSession(){
+    sessionStorage.removeItem("birta_admin_session");
+  }
+  function loadOrders(){
+    return JSON.parse(localStorage.getItem("birta_orders") || "[]");
+  }
+
+  let adminTab = "overview";
+  const adminRoot = document.getElementById("adminApp");
+
+  function routeAdmin(){
+    if(window.location.hash === "#admin"){
+      document.body.classList.add("admin-mode");
+      window.scrollTo(0,0);
+      getAdminSession() ? renderAdminDashboard() : renderAdminLogin();
+    } else {
+      document.body.classList.remove("admin-mode");
+    }
+  }
+
+  function renderAdminLogin(){
+    adminRoot.innerHTML = `
+      <div class="admin-login-wrap">
+        <div class="admin-login-box">
+          <div class="logo">B<span>i</span>rta</div>
+          <div class="sub">Innskráning stjórnenda</div>
+          <div class="admin-error" id="adminLoginError">Rangt notandanafn eða lykilorð.</div>
+          <div class="field"><label>Notandanafn</label><input id="adminUser" autocomplete="username"></div>
+          <div class="field"><label>Lykilorð</label><input id="adminPass" type="password" autocomplete="current-password"></div>
+          <button class="btn-admin" style="width:100%; padding:13px;" id="adminLoginBtn">Skrá inn</button>
+          <div class="admin-hint">Sýnidæmi: notandanafn <strong>admin</strong>, lykilorð <strong>birta2026</strong>. Gögn vistast eingöngu í þessum vafra — ekki alvöru öryggislausn.</div>
+          <a href="#top" class="back-to-shop">← Til baka í verslun</a>
+        </div>
+      </div>
+    `;
+    const doLogin = () => {
+      const u = document.getElementById("adminUser").value.trim();
+      const p = document.getElementById("adminPass").value;
+      const users = loadAdminUsers();
+      const match = users.find(x => x.username === u && x.password === p);
+      const err = document.getElementById("adminLoginError");
+      if(match){ setAdminSession(u); adminTab = "overview"; renderAdminDashboard(); }
+      else { err.classList.add("show"); }
+    };
+    document.getElementById("adminLoginBtn").addEventListener("click", doLogin);
+    document.getElementById("adminPass").addEventListener("keydown", e=>{ if(e.key==="Enter") doLogin(); });
+  }
+
+  function adminNavItems(){
+    return [
+      {id:"overview", label:"Yfirlit"},
+      {id:"products", label:"Vörur"},
+      {id:"orders", label:"Pantanir"},
+      {id:"users", label:"Notendur"}
+    ];
+  }
+
+  function renderAdminDashboard(){
+    const session = getAdminSession();
+    adminRoot.innerHTML = `
+      <div class="admin-shell">
+        <div class="admin-sidebar">
+          <div class="logo">B<span>i</span>rta</div>
+          ${adminNavItems().map(item => `<div class="admin-nav-item ${adminTab===item.id?'active':''}" data-tab="${item.id}">${item.label}</div>`).join("")}
+          <div class="admin-sidebar-foot">
+            <div class="admin-user-pill">Innskráð/ur sem<br><strong>${session}</strong></div>
+            <a href="#top" class="admin-view-shop">Skoða verslun</a>
+            <a href="#" class="admin-logout" id="adminLogoutBtn">Útskrá</a>
+          </div>
+        </div>
+        <div class="admin-main" id="adminMain"></div>
+      </div>
+    `;
+    document.querySelectorAll(".admin-nav-item").forEach(el=>{
+      el.addEventListener("click", ()=>{ adminTab = el.dataset.tab; renderAdminDashboard(); });
+    });
+    document.getElementById("adminLogoutBtn").addEventListener("click", (e)=>{
+      e.preventDefault(); clearAdminSession(); window.location.hash = "#admin"; renderAdminLogin();
+    });
+    renderAdminMain();
+  }
+
+  function renderAdminMain(){
+    const main = document.getElementById("adminMain");
+    if(adminTab === "overview") return renderAdminOverview(main);
+    if(adminTab === "products") return renderAdminProducts(main);
+    if(adminTab === "orders") return renderAdminOrders(main);
+    if(adminTab === "users") return renderAdminUsers(main);
+  }
+
+  function renderAdminOverview(main){
+    const orders = loadOrders();
+    const revenue = orders.reduce((s,o)=>s+o.total,0);
+    const lowStock = PRODUCTS.filter(p=>p.stock>0 && p.stock<=3).length;
+    const outStock = PRODUCTS.filter(p=>p.stock<=0).length;
+    main.innerHTML = `
+      <div class="admin-topbar"><div><h1>Yfirlit</h1><div class="sub">Staða verslunar í hnotskurn</div></div></div>
+      <div class="stat-row">
+        <div class="stat-card"><div class="n">${PRODUCTS.length}</div><div class="l">Vörur í boði</div></div>
+        <div class="stat-card"><div class="n">${lowStock}</div><div class="l">Vörur að klárast (≤3)</div></div>
+        <div class="stat-card"><div class="n">${outStock}</div><div class="l">Uppseldar vörur</div></div>
+        <div class="stat-card"><div class="n">${orders.length}</div><div class="l">Pantanir samtals</div></div>
+      </div>
+      <div class="admin-panel">
+        <div class="admin-panel-head"><h2>Heildarsala</h2></div>
+        <div style="padding:22px;">
+          <div class="stat-card" style="border:none; padding:0;">
+            <div class="n">${money(revenue)}</div>
+            <div class="l">Frá ${orders.length} staðfestum pöntunum</div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderAdminProducts(main){
+    main.innerHTML = `
+      <div class="admin-topbar">
+        <div><h1>Vörur</h1><div class="sub">Breyttu verði, birgðastöðu eða bættu við nýrri vöru</div></div>
+        <button class="btn-admin" id="addProductBtn">+ Bæta við vöru</button>
+      </div>
+      <div class="admin-panel">
+        <div class="table-scroll">
+          <table class="admin-table">
+            <thead><tr>
+              <th>Vara</th><th>Flokkur</th><th>Verð (kr.)</th><th>Á lager</th><th></th>
+            </tr></thead>
+            <tbody id="productsTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    `;
+    const body = document.getElementById("productsTableBody");
+    if(PRODUCTS.length === 0){
+      body.innerHTML = `<tr class="empty-row"><td colspan="5">Engar vörur skráðar.</td></tr>`;
+    } else {
+      body.innerHTML = PRODUCTS.map(p => `
+        <tr data-id="${p.id}">
+          <td><input type="text" value="${escapeAttr(p.name)}" data-field="name" style="min-width:180px;"></td>
+          <td>
+            <select data-field="cat">
+              ${ADMIN_CATS.map(c=>`<option value="${c}" ${c===p.cat?'selected':''}>${c}</option>`).join("")}
+            </select>
+          </td>
+          <td><input type="number" min="0" value="${p.price}" data-field="price" style="width:100px;"></td>
+          <td><input type="number" min="0" value="${p.stock}" data-field="stock" style="width:80px;"></td>
+          <td class="cell-actions">
+            <span class="save-indicator">Vistað ✓</span>
+            <button class="btn-admin-danger" data-del="${p.id}">Eyða</button>
+          </td>
+        </tr>
+      `).join("");
+    }
+
+    body.querySelectorAll("tr").forEach(row=>{
+      const id = parseInt(row.dataset.id);
+      row.querySelectorAll("[data-field]").forEach(input=>{
+        input.addEventListener("change", ()=>{
+          const product = PRODUCTS.find(p=>p.id===id);
+          const field = input.dataset.field;
+          if(field === "price" || field === "stock"){
+            product[field] = Math.max(0, parseInt(input.value) || 0);
+            input.value = product[field];
+          } else {
+            product[field] = input.value;
+          }
+          saveProducts();
+          renderProducts();
+          const ind = row.querySelector(".save-indicator");
+          ind.classList.add("show");
+          setTimeout(()=> ind.classList.remove("show"), 1200);
+        });
+      });
+    });
+    body.querySelectorAll("[data-del]").forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        const id = parseInt(btn.dataset.del);
+        const product = PRODUCTS.find(p=>p.id===id);
+        if(confirm(`Eyða „${product.name}" úr vörulistanum?`)){
+          PRODUCTS = PRODUCTS.filter(p=>p.id!==id);
+          saveProducts();
+          renderProducts();
+          renderAdminProducts(main);
+        }
+      });
+    });
+
+    document.getElementById("addProductBtn").addEventListener("click", openAddProductModal);
+  }
+
+  function openAddProductModal(){
+    const overlay = document.createElement("div");
+    overlay.className = "admin-modal-overlay";
+    overlay.innerHTML = `
+      <div class="admin-modal">
+        <h2>Ný vara</h2>
+        <div class="field"><label>Heiti</label><input id="npName"></div>
+        <div class="field-row">
+          <div class="field"><label>Flokkur</label>
+            <select id="npCat" style="width:100%; padding:11px 13px; border:1px solid var(--line); background:var(--bg); border-radius:2px;">
+              ${ADMIN_CATS.map(c=>`<option value="${c}">${c}</option>`).join("")}
+            </select>
+          </div>
+          <div class="field"><label>Táknmynd (emoji)</label><input id="npIcon" value="🛍️"></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Verð (kr.)</label><input id="npPrice" type="number" min="0" value="0"></div>
+          <div class="field"><label>Á lager</label><input id="npStock" type="number" min="0" value="0"></div>
+        </div>
+        <div class="field"><label>Lýsing</label><textarea id="npDesc" rows="3"></textarea></div>
+        <div style="display:flex; gap:10px; margin-top:6px;">
+          <button class="btn-admin-outline" style="flex:1;" id="npCancel">Hætta við</button>
+          <button class="btn-admin" style="flex:1;" id="npSave">Vista vöru</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+    overlay.addEventListener("click", e=>{ if(e.target === overlay) overlay.remove(); });
+    document.getElementById("npCancel").addEventListener("click", ()=> overlay.remove());
+    document.getElementById("npSave").addEventListener("click", ()=>{
+      const name = document.getElementById("npName").value.trim();
+      if(!name){ document.getElementById("npName").focus(); return; }
+      const newProduct = {
+        id: Date.now(),
+        name,
+        cat: document.getElementById("npCat").value,
+        icon: document.getElementById("npIcon").value.trim() || "🛍️",
+        price: Math.max(0, parseInt(document.getElementById("npPrice").value) || 0),
+        stock: Math.max(0, parseInt(document.getElementById("npStock").value) || 0),
+        desc: document.getElementById("npDesc").value.trim()
+      };
+      PRODUCTS.push(newProduct);
+      saveProducts();
+      renderProducts();
+      overlay.remove();
+      renderAdminProducts(document.getElementById("adminMain"));
+    });
+  }
+
+  function renderAdminOrders(main){
+    const orders = loadOrders().slice().reverse();
+    main.innerHTML = `
+      <div class="admin-topbar"><div><h1>Pantanir</h1><div class="sub">${orders.length} pantanir vistaðar í þessum vafra</div></div></div>
+      <div class="admin-panel">
+        <div class="table-scroll">
+          <table class="admin-table">
+            <thead><tr><th>Pöntun</th><th>Dagsetning</th><th>Vörur</th><th>Upphæð</th></tr></thead>
+            <tbody>
+              ${orders.length === 0 ? `<tr class="empty-row"><td colspan="4">Engar pantanir enn.</td></tr>` :
+                orders.map(o => `
+                  <tr>
+                    <td class="mono">${o.id}</td>
+                    <td>${new Date(o.date).toLocaleDateString("is-IS")} ${new Date(o.date).toLocaleTimeString("is-IS",{hour:'2-digit',minute:'2-digit'})}</td>
+                    <td>${o.items.map(i=> (i.product ? i.product.name : "vara") + " ×" + i.qty).join(", ")}</td>
+                    <td class="mono">${money(o.total)}</td>
+                  </tr>
+                `).join("")}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderAdminUsers(main){
+    const users = loadAdminUsers();
+    main.innerHTML = `
+      <div class="admin-topbar">
+        <div><h1>Notendur</h1><div class="sub">Stjórnendaaðgangar að þessu stjórnborði</div></div>
+        <button class="btn-admin" id="addUserBtn">+ Nýr notandi</button>
+      </div>
+      <div class="admin-panel">
+        <div class="table-scroll">
+          <table class="admin-table">
+            <thead><tr><th>Notandanafn</th><th>Hlutverk</th><th></th></tr></thead>
+            <tbody>
+              ${users.map(u => `
+                <tr>
+                  <td>${escapeAttr(u.username)}</td>
+                  <td>${escapeAttr(u.role || "Stjórnandi")}</td>
+                  <td class="cell-actions">${users.length > 1 ? `<button class="btn-admin-danger" data-deluser="${escapeAttr(u.username)}">Eyða</button>` : `<span style="color:var(--ink-soft); font-size:0.8rem;">Síðasti aðgangur</span>`}</td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    `;
+    main.querySelectorAll("[data-deluser]").forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        const uname = btn.dataset.deluser;
+        if(uname === getAdminSession()){ alert("Ekki hægt að eyða þeim aðgangi sem þú ert skráð/ur inn á."); return; }
+        if(confirm(`Eyða notandanum „${uname}"?`)){
+          const remaining = loadAdminUsers().filter(u=>u.username !== uname);
+          saveAdminUsers(remaining);
+          renderAdminUsers(main);
+        }
+      });
+    });
+    document.getElementById("addUserBtn").addEventListener("click", openAddUserModal);
+  }
+
+  function openAddUserModal(){
+    const overlay = document.createElement("div");
+    overlay.className = "admin-modal-overlay";
+    overlay.innerHTML = `
+      <div class="admin-modal">
+        <h2>Nýr stjórnandi</h2>
+        <div class="admin-error" id="nuError">Notandanafn er þegar til.</div>
+        <div class="field"><label>Notandanafn</label><input id="nuUser"></div>
+        <div class="field"><label>Lykilorð</label><input id="nuPass" type="password"></div>
+        <div class="field"><label>Hlutverk (valfrjálst)</label><input id="nuRole" value="Stjórnandi"></div>
+        <div style="display:flex; gap:10px; margin-top:6px;">
+          <button class="btn-admin-outline" style="flex:1;" id="nuCancel">Hætta við</button>
+          <button class="btn-admin" style="flex:1;" id="nuSave">Búa til aðgang</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+    overlay.addEventListener("click", e=>{ if(e.target === overlay) overlay.remove(); });
+    document.getElementById("nuCancel").addEventListener("click", ()=> overlay.remove());
+    document.getElementById("nuSave").addEventListener("click", ()=>{
+      const username = document.getElementById("nuUser").value.trim();
+      const password = document.getElementById("nuPass").value;
+      const role = document.getElementById("nuRole").value.trim() || "Stjórnandi";
+      if(!username || !password){ return; }
+      const users = loadAdminUsers();
+      if(users.find(u=>u.username === username)){
+        document.getElementById("nuError").classList.add("show");
+        return;
+      }
+      users.push({username, password, role});
+      saveAdminUsers(users);
+      overlay.remove();
+      renderAdminUsers(document.getElementById("adminMain"));
+    });
+  }
+
+  function escapeAttr(str){
+    return String(str).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+  }
+
+  window.addEventListener("hashchange", routeAdmin);
+
+  /* ===== Init ===== */
+  renderProducts();
+  renderCartCount();
+  routeAdmin();
+})();
+</script>
+</body>
+</html>
